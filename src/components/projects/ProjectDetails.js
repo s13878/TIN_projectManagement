@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
+import CommentList from '../comments/CommentList'
 import moment from 'moment'
 
 const ProjectDetails = (props) => {
-  const { project, auth } = props;
+  const { id, comments, project, auth } = props;
   if(!auth.uid) return <Redirect to='/signin' />
     if(project){
     return (
@@ -21,6 +22,7 @@ const ProjectDetails = (props) => {
               <div>{moment(project.createdAt.toDate()).calendar()}</div>
           </div>
         </div>
+        <CommentList comments={ comments } id={ id }/>
       </div>
     )
     } else {
@@ -33,11 +35,14 @@ const ProjectDetails = (props) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  //console.log(state);
   const id = ownProps.match.params.id;
   const projects = state.firestore.data.projects;
   const project = projects ? projects[id] : null;
-  return {
+  const allComments = state.firestore.ordered.comments;
+  const comments = allComments ? allComments.filter(comment => comment.projectId === id) : null;
+  return { 
+    id: id,
+    comments: comments,
     project: project,
     auth: state.firebase.auth
   }
@@ -46,6 +51,7 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'projects' }
+    { collection: 'projects' },
+    { collection: 'comments' }
   ])
 )(ProjectDetails)
