@@ -45,3 +45,52 @@ input[type=email]:not(.browser-default):focus:not([readonly]) + label,
 input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   color: #ec407a !important;
 }
+
+.icon-white {
+  color: white;
+}
+
+#topNav {
+  display: none;
+}
+
+.mobile {
+  position: fixed;
+  top: 0;
+  background: rgba(90,90,90,0.9);
+  width: 80vw;
+  height: 100vh;
+  z-index: 200;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /*display: none;*/
+  transform: translateX(-100%);
+  transition: transform 500ms ease-in-out;
+}
+
+.open {
+  /*display: flex;*/
+  transform: translateX(0);
+}
+
+.mobile__menu ul {
+  width: 100%;
+  font-size: 40px;
+}
+.mobile__menu ul li:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+@media (min-width: 46rem) {
+  .sidenav-trigger {
+    display: none;
+  }
+
+  #topNav {
+    display: block;
+  }
+}
